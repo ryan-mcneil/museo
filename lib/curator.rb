@@ -57,10 +57,17 @@ class Curator
   def load_photographs(file)
     photo_data = FileIO.load_photographs(file)
 
-    photo_data.each do |attributes|
-      add_photograph(attributes)
+    photo_data.each do |data|
+      add_photograph(data)
     end
+  end
 
+  def load_artists(file)
+    artist_data = FileIO.load_artists(file)
+
+    artist_data.each do |data|
+      add_artist(data)
+    end
   end
 
 end
