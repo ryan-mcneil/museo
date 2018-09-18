@@ -34,7 +34,7 @@ class Curator
 
   def find_photographs_by_artist(artist)
     @photographs.find_all do |photograph|
-      photograph.artist_id == artist.id
+      @artists.include?(artist) && photograph.artist_id == artist.id
     end
   end
 
@@ -42,6 +42,15 @@ class Curator
     @artists.find_all do |artist|
       find_photographs_by_artist(artist).count > 1
     end
+  end
+
+  def photographs_taken_by_artists_from(country)
+    @artists.inject([]) do |photos, artist|
+      if artist.country == country
+        photos << find_photographs_by_artist(artist)
+      end
+      photos
+    end.flatten
   end
 
 end
