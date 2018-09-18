@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/curator'
-require './lib/photograph'
 
 class CuratorTest < MiniTest::Test
 
@@ -36,6 +35,30 @@ class CuratorTest < MiniTest::Test
     curator.add_photograph(photo_2)
     assert_equal 2, curator.photographs.count
     assert_equal "2", curator.photographs[1].id
+  end
+
+  def test_it_can_add_artists
+    curator = Curator.new
+    artist_1 = {
+                id: "1",
+                name: "Henri Cartier-Bresson",
+                born: "1908",
+                died: "2004",
+                country: "France"
+               }
+    artist_2 = {
+                id: "2",
+                name: "Ansel Adams",
+                born: "1902",
+                died: "1984",
+                country: "United States"
+               }
+    curator.add_artist(artist_1)
+    assert_instance_of Artist, curator.artists[0]
+    assert_equal 1, curator.artists.count
+    curator.add_artist(artist_2)
+    assert_equal 2, curator.artists.count
+    assert_equal "1902", curator.artists[1].born
   end
 
 
