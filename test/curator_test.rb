@@ -18,17 +18,17 @@ class CuratorTest < MiniTest::Test
   def test_it_can_add_photographs
     curator = Curator.new
     photo_1 = {
-                id: "1",
-                name: "Rue Mouffetard, Paris (Boy with Bottles)",
-                artist_id: "1",
-                year: "1954"
-              }
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
     photo_2 = {
-                id: "2",
-                name: "Moonrise, Hernandez",
-                artist_id: "2",
-                year: "1941"
-              }
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
     curator.add_photograph(photo_1)
     assert_instance_of Photograph, curator.photographs[0]
     assert_equal 1, curator.photographs.count
@@ -40,19 +40,19 @@ class CuratorTest < MiniTest::Test
   def test_it_can_add_artists
     curator = Curator.new
     artist_1 = {
-                id: "1",
-                name: "Henri Cartier-Bresson",
-                born: "1908",
-                died: "2004",
-                country: "France"
-               }
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
     artist_2 = {
-                id: "2",
-                name: "Ansel Adams",
-                born: "1902",
-                died: "1984",
-                country: "United States"
-               }
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
     curator.add_artist(artist_1)
     assert_instance_of Artist, curator.artists[0]
     assert_equal 1, curator.artists.count
@@ -64,19 +64,19 @@ class CuratorTest < MiniTest::Test
   def test_it_can_find_artist_by_id
     curator = Curator.new
     artist_1 = {
-                id: "1",
-                name: "Henri Cartier-Bresson",
-                born: "1908",
-                died: "2004",
-                country: "France"
-               }
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
     artist_2 = {
-                id: "2",
-                name: "Ansel Adams",
-                born: "1902",
-                died: "1984",
-                country: "United States"
-               }
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
     curator.add_artist(artist_1)
     curator.add_artist(artist_2)
 
@@ -91,17 +91,17 @@ class CuratorTest < MiniTest::Test
   def test_it_can_find_photograph_by_id
     curator = Curator.new
     photo_1 = {
-                id: "1",
-                name: "Rue Mouffetard, Paris (Boy with Bottles)",
-                artist_id: "1",
-                year: "1954"
-              }
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
     photo_2 = {
-                id: "2",
-                name: "Moonrise, Hernandez",
-                artist_id: "2",
-                year: "1941"
-              }
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
     curator.add_photograph(photo_1)
     curator.add_photograph(photo_2)
 
@@ -110,6 +110,198 @@ class CuratorTest < MiniTest::Test
     assert_instance_of Photograph, actual
     assert_equal "Moonrise, Hernandez", actual.name
     assert_nil curator.find_photograph_by_id("3")
+  end
+
+  def test_it_can_find_photographs_by_artist
+    curator = Curator.new
+    photo_1 = {
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
+    photo_2 = {
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
+    photo_3 = {
+      id: "3",
+      name: "Identical Twins, Roselle, New Jersey",
+      artist_id: "3",
+      year: "1967"
+    }
+    photo_4 = {
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+    }
+    artist_1 = {
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
+    artist_2 = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
+    artist_3 = {
+      id: "3",
+      name: "Diane Arbus",
+      born: "1923",
+      died: "1971",
+      country: "United States"
+    }
+
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    curator.add_photograph(photo_4)
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_artist(artist_3)
+
+    diane_arbus = curator.find_artist_by_id("3")
+
+    actual = curator.find_photographs_by_artist(diane_arbus)
+
+    assert_instance_of Photograph, actual[0]
+    assert_equal 2, actual.count
+    assert_equal [], curator.find_photographs_by_artist("Ryan")
+  end
+
+  def test_it_can_find_artists_with_multiple_photographs
+    curator = Curator.new
+    photo_1 = {
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
+    photo_2 = {
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
+    photo_3 = {
+      id: "3",
+      name: "Identical Twins, Roselle, New Jersey",
+      artist_id: "3",
+      year: "1967"
+    }
+    photo_4 = {
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+    }
+    artist_1 = {
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
+    artist_2 = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
+    artist_3 = {
+      id: "3",
+      name: "Diane Arbus",
+      born: "1923",
+      died: "1971",
+      country: "United States"
+    }
+
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    curator.add_photograph(photo_4)
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_artist(artist_3)
+
+    actual = curator.artists_with_multiple_photographs
+
+    assert_instance_of Artist, actual[0]
+    assert_equal 1, actual.length
+    assert_equal "Diane Arbus", actual[0].name
+  end
+
+  def test_it_can_find_photos_taken_by_an_artist_from_a_place
+    curator = Curator.new
+    photo_1 = {
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
+    photo_2 = {
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
+    photo_3 = {
+      id: "3",
+      name: "Identical Twins, Roselle, New Jersey",
+      artist_id: "3",
+      year: "1967"
+    }
+    photo_4 = {
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+    }
+    artist_1 = {
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
+    artist_2 = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
+    artist_3 = {
+      id: "3",
+      name: "Diane Arbus",
+      born: "1923",
+      died: "1971",
+      country: "United States"
+    }
+
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    curator.add_photograph(photo_4)
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_artist(artist_3)
+
+    actual = curator.photographs_taken_by_artists_from("United States")
+
+    assert_instance_of Photograph, actual[0]
+    assert_equal 3, actual.count
+    assert_equal "Moonrise, Hernandez", actual[0].name
+    assert_equal [], curator.photographs_taken_by_artists_from("Ryan's House")
   end
 
 end
