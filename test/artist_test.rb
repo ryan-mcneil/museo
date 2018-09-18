@@ -5,23 +5,25 @@ require './lib/artist'
 class ArtistTest < MiniTest::Test
 
   def test_it_exists
-    attributes = {id: "2",
-                  name: "Ansel Adams",
-                  born: "1902",
-                  died: "1984",
-                  country: "United States"
-                  }
+    attributes = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
     artist = Artist.new(attributes)
     assert_instance_of Artist, artist
   end
 
   def test_it_has_attributes
-    attributes = {id: "2",
-                  name: "Ansel Adams",
-                  born: "1902",
-                  died: "1984",
-                  country: "United States"
-                  }
+    attributes = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
     artist = Artist.new(attributes)
     assert_equal "2", artist.id
     assert_equal "Ansel Adams", artist.name
