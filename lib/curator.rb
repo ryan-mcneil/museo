@@ -7,4 +7,8 @@ class Curator
     @photographs = []
   end
 
+  def add_photograph(data)
+    photo = Photograph.new(data)
+    @photographs << photo
+  end
 end
