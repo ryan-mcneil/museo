@@ -1,5 +1,6 @@
 require './lib/photograph'
 require './lib/artist'
+require './lib/file_io'
 
 class Curator
   attr_reader :artists,
@@ -51,6 +52,15 @@ class Curator
       end
       photos
     end.flatten
+  end
+
+  def load_photographs(file)
+    photo_data = FileIO.load_photographs(file)
+
+    photo_data.each do |attributes|
+      add_photograph(attributes)
+    end
+
   end
 
 end
