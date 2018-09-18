@@ -320,4 +320,15 @@ class CuratorTest < MiniTest::Test
     assert_instance_of Artist, curator.artists[0]
   end
 
+  def test_it_can_find_photos_taken_between_years
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+
+    range = (1950..1965)
+    actual = curator.photographs_taken_between(range)
+    assert_equal 2, actual.count
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", actual[0].name
+    assert_equal [], curator.photographs_taken_between(2001..2002)
+  end
+
 end

@@ -1,6 +1,7 @@
 require './lib/photograph'
 require './lib/artist'
 require './lib/file_io'
+require 'pry'
 
 class Curator
   attr_reader :artists,
@@ -67,6 +68,12 @@ class Curator
 
     artist_data.each do |data|
       add_artist(data)
+    end
+  end
+
+  def photographs_taken_between(range)
+    @photographs.find_all do |photo|
+      range.include?(photo.year.to_i)
     end
   end
 
