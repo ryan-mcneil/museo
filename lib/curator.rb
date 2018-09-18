@@ -1,5 +1,7 @@
 require './lib/photograph'
 require './lib/artist'
+require './lib/file_io'
+require 'pry'
 
 class Curator
   attr_reader :artists,
@@ -51,6 +53,37 @@ class Curator
       end
       photos
     end.flatten
+  end
+
+  def load_photographs(file)
+    photo_data = FileIO.load_photographs(file)
+
+    photo_data.each do |data|
+      add_photograph(data)
+    end
+  end
+
+  def load_artists(file)
+    artist_data = FileIO.load_artists(file)
+
+    artist_data.each do |data|
+      add_artist(data)
+    end
+  end
+
+  def photographs_taken_between(range)
+    @photographs.find_all do |photo|
+      range.include?(photo.year.to_i)
+    end
+  end
+
+  def artists_photographs_by_age(artist)
+    artist_photos = find_photographs_by_artist(artist)
+    artist_photos.inject(Hash.new("")) do |hash, photograph|
+      age = photograph.year.to_i - artist.born.to_i
+      hash[age] = photograph.name
+      hash
+    end
   end
 
 end

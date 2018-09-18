@@ -304,4 +304,42 @@ class CuratorTest < MiniTest::Test
     assert_equal [], curator.photographs_taken_by_artists_from("Ryan's House")
   end
 
+  def test_it_can_load_photographs
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+
+    assert_equal 4, curator.photographs.count
+    assert_instance_of Photograph, curator.photographs[0]
+  end
+
+  def test_it_can_load_artists
+    curator = Curator.new
+    curator.load_artists('./data/artists.csv')
+
+    assert_equal 6, curator.artists.count
+    assert_instance_of Artist, curator.artists[0]
+  end
+
+  def test_it_can_find_photos_taken_between_years
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+
+    range = (1950..1965)
+    actual = curator.photographs_taken_between(range)
+    assert_equal 2, actual.count
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", actual[0].name
+    assert_equal [], curator.photographs_taken_between(2001..2002)
+  end
+
+  def test_it_can_find_artists_photos_by_age
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    curator.load_artists('./data/artists.csv')
+
+    diane_arbus = curator.find_artist_by_id("3")
+
+    expected = {44=>"Identical Twins, Roselle, New Jersey", 39=>"Child with Toy Hand Grenade in Central Park"}
+    actual = curator.artists_photographs_by_age(diane_arbus)
+    assert_equal expected, actual
+  end
 end
